@@ -1,0 +1,14 @@
+---
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: emojijournalserver
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+        - image: REGISTRY_URL/replace-me-namespace/emojijournalserver
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
