@@ -12,19 +12,25 @@ public let health = Health()
 public class App {
     let router = Router()
     let cloudEnv = CloudEnv()
-
+    
     public init() throws {
-        // Configure logging
-        initializeLogging()
         // Run the metrics initializer
         initializeMetrics(router: router)
     }
-
+    
     func postInit() throws {
         // Endpoints
         initializeHealthRoutes(app: self)
+        initializeEntryRoutes(app: self)
+        router.get("/", handler: helloWorldHandler)
     }
-
+    
+    func helloWorldHandler(request: RouterRequest, response: RouterResponse, next: ()->()) {
+        response.headers.setType(MediaType.TopLevelType.text.rawValue)
+        response.send("Hello, World!")
+        next()
+    }
+    
     public func run() throws {
         try postInit()
         Kitura.addHTTPServer(onPort: cloudEnv.port, with: router)
