@@ -5,6 +5,7 @@ import Configuration
 import CloudEnvironment
 import KituraContracts
 import Health
+import KituraOpenAPI
 
 public let projectPath = ConfigurationManager.BasePath.project.path
 public let health = Health()
@@ -23,6 +24,7 @@ public class App {
         initializeHealthRoutes(app: self)
         initializeEntryRoutes(app: self)
         router.get("/", handler: helloWorldHandler)
+        KituraOpenAPI.addEndpoints(to: router)
     }
     
     func helloWorldHandler(request: RouterRequest, response: RouterResponse, next: ()->()) {
