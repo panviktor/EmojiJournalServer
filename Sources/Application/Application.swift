@@ -24,8 +24,9 @@ public class App {
     // Endpoints
     initializeHealthRoutes(app: self)
     initializeEntryRoutes(app: self)
-    router.get("/", handler: helloWorldHandler)
+    initializeUserRoutes(app: self)
     KituraOpenAPI.addEndpoints(to: router)
+    router.get("/", handler: helloWorldHandler)
   }
   
   func helloWorldHandler(request: RouterRequest, response: RouterResponse, next: ()->()) {

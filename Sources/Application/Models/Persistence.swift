@@ -1,10 +1,3 @@
-//
-//  Persistence.swift
-//  
-//
-//  Created by Viktor on 12.09.2020.
-//
-
 import Foundation
 import SwiftKueryORM
 import SwiftKueryPostgreSQL
@@ -24,14 +17,31 @@ class Persistence {
         Database.default = Database(pool)
         
         do {
-            try JournalEntry.createTableSync()
+            try UserJournalEntry.createTableSync()
         } catch let error {
             // Database table already exists
             if let requestError = error as? RequestError,
-               requestError.rawValue == RequestError.ormQueryError.rawValue {
-                Log.info("Table \(JournalEntry.tableName) already exists")
+               requestError.rawValue ==
+                RequestError.ormQueryError.rawValue {
+                Log.info("Table \(UserJournalEntry.tableName) " +
+                            "already exists")
             } else {
-                Log.error("Database connection error: \(String(describing: error))")
+                Log.error("Database connection error: " +
+                            "\(String(describing: error))")
+            }
+        }
+        
+        do {
+            try UserAuth.createTableSync()
+        } catch let error {
+            // Database table already exists
+            if let requestError = error as? RequestError,
+               requestError.rawValue ==
+                RequestError.ormQueryError.rawValue {
+                Log.info("Table \(UserAuth.tableName) already exists")
+            } else {
+                Log.error("Database connection error: " +
+                            "\(String(describing: error))")
             }
         }
     }

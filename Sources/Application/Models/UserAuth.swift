@@ -1,27 +1,29 @@
-//
-//  UserAuth.swift
-//  
-//
-//  Created by Viktor on 13.09.2020.
-//
-
 import CredentialsHTTP
+import SwiftKueryORM
 
-public struct UserAuth {
-    public var id: String
-    private let password: String
+public struct UserAuth: Model {
+  public var id: String
+  private let password: String
 }
 
 extension UserAuth: TypeSafeHTTPBasic {
-    public static let authenticate = ["John": "12345", "Mary": "ABCDE"]
+  
+  public static let authenticate =
+    ["John": "12345", "Mary": "ABCDE"]
+  
+  public static func verifyPassword(username: String,
+    password: String, callback: @escaping (UserAuth?) -> Void) {
     
-    public static func verifyPassword(username: String,
-                                      password: String, callback: @escaping (UserAuth?) -> Void) {
-        
-        if let storedPassword = authenticate[username], storedPassword == password {
-            callback(UserAuth(id: username, password: password))
-            return
+    UserAuth.find(id: username) { userAuth, error in
+      
+      if let userAuth = userAuth {
+        if password == userAuth.password {
+          callback(userAuth)
+          return
         }
-        callback(nil)
+      }
+        
+      callback(nil)
     }
+  }
 }
