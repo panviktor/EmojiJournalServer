@@ -17,6 +17,7 @@ public class App {
     public init() throws {
         // Run the metrics initializer
         initializeMetrics(router: router)
+        Persistence.setUp()
     }
     
     func postInit() throws {

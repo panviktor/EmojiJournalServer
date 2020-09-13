@@ -22,43 +22,29 @@ func initializeEntryRoutes(app: App) {
 }
 
 
-func addEntry(entry: JournalEntry, completion: @escaping (JournalEntry?, RequestError?) -> Void) {
-    var storedEntry = entry
-    storedEntry.id = entries.count.value
-    entries.append(storedEntry)
-    completion(storedEntry, nil)
+func addEntry(entry: JournalEntry, completion:
+                @escaping (JournalEntry?, RequestError?) -> Void) {
+    var savedEntry = entry
+    savedEntry.id = UUID().uuidString
+    savedEntry.save(completion)
 }
 
-func getEntries(params: JournalEntryParams?, completion: @escaping ([JournalEntry]?, RequestError?) -> Void) -> Void {
-    guard let params = params else {
-        return completion(entries, nil)
-    }
-    let filteredEntries = entries.filter { $0.emoji == params.emoji }
-    completion(filteredEntries, nil)
+func getEntries(query: JournalEntryParams?, completion:
+                    @escaping ([JournalEntry]?, RequestError?) -> Void) -> Void {
+    JournalEntry.findAll(matching: query, completion)
 }
 
-func deleteEntry(id: String, completion: @escaping (RequestError?) -> Void) {
-    guard let index = entries.firstIndex(where: { $0.id == id }) else {
-        return completion(.notFound)
-    }
-    entries.remove(at: index)
-    completion(nil)
+func deleteEntry(id: String, completion:
+                    @escaping (RequestError?) -> Void) {
+    JournalEntry.delete(id: id, completion)
 }
 
-func modifyEntry(id: String, entry: JournalEntry, completion: @escaping (JournalEntry?, RequestError?) -> Void) {
-    guard let index = entries.firstIndex(where: { $0.id == id }) else {
-        return completion(nil, .notFound)
-    }
-    var storedEntry = entry
-    storedEntry.id = id
-    entries[index] = storedEntry
-    completion(storedEntry, nil)
+func modifyEntry(id: String, entry: JournalEntry,
+                 completion: @escaping (JournalEntry?, RequestError?) -> Void) {
+    entry.update(id: id, completion)
 }
 
-func getOneEntry(id: String, completion: @escaping (JournalEntry?, RequestError?) -> Void) {
-    guard let index = entries.firstIndex(where: { $0.id == id }) else {
-        return completion(nil, .notFound)
-    }
-    completion(entries[index], nil)
+func getOneEntry(id: String, completion:
+                    @escaping (JournalEntry?, RequestError?) -> Void) {
+    JournalEntry.find(id: id, completion)
 }
-

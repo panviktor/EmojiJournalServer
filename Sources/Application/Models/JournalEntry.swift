@@ -1,7 +1,8 @@
 import Foundation
 import KituraContracts
+import SwiftKueryORM
 
-struct JournalEntry: Codable {
+struct JournalEntry: Model {
   var id: String?
   var emoji: String
   var date: Date

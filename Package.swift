@@ -10,6 +10,8 @@ let package = Package(
         .package(url: "https://github.com/RuntimeTools/SwiftMetrics.git", from: "2.0.0"),
         .package(url: "https://github.com/IBM-Swift/Health.git", from: "1.0.0"),
         .package(name: "KituraOpenAPI", url: "https://github.com/IBM-Swift/Kitura-OpenAPI.git", from: "1.1.1"),
+        .package(name: "SwiftKueryPostgreSQL", url: "https://github.com/IBM-Swift/Swift-Kuery-PostgreSQL", from: "2.1.1"),
+        .package(name: "SwiftKueryORM", url: "https://github.com/IBM-Swift/Swift-Kuery-ORM", from: "0.6.0"),
     ],
     targets: [
         .target(
@@ -25,7 +27,9 @@ let package = Package(
                 "CloudEnvironment",
                 "SwiftMetrics",
                 "Health",
-                "KituraOpenAPI"]),
+                "KituraOpenAPI",
+                "SwiftKueryPostgreSQL",
+                "SwiftKueryORM"]),
         .testTarget(
             name: "ApplicationTests",
             dependencies: [
